@@ -1,8 +1,10 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    // SOURCE OF PACKAGES
     pkg: grunt.file.readJSON('package.json'),
 
+    // INDIVIDUAL TASK SPECS
     concat: {
       dist: {
         src: ['public/client/*.js'],
@@ -26,12 +28,23 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      dist: {
+        src: ['public/dist/build.js'],
+        dest: 'public/dist/build.js'
+      },
     },
 
     jshint: {
-      files: [
-        // Add filespec list here
-      ],
+      files: {
+       src: [
+       'Gruntfile.js',
+       'public/client/*.js',
+       'app/*.js',
+       'app/collections/*.js',
+       'app/models/*.js',
+       'lib/*.js'
+       ]
+      },
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
@@ -43,6 +56,15 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'public/',
+          src: ['*.css', '!*.min.css'],
+          dest: 'public/dist',
+          ext: '.min.css'
+        }]
+      }
     },
 
     watch: {
@@ -68,6 +90,8 @@ module.exports = function(grunt) {
     },
   });
 
+
+  // LOAD ALL DESIRED NPM TASKS
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -77,6 +101,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
 
+
+  // REGISTER ALL CREATED TASKS
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
     var nodemon = grunt.util.spawn({
@@ -99,7 +125,10 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'concat'
+    'concat',
+    'uglify',
+    'cssmin',
+    'jshint'
   ]);
 
   grunt.registerTask('upload', function(n) {
