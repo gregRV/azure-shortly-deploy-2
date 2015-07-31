@@ -1,10 +1,8 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    // SOURCE OF PACKAGES
     pkg: grunt.file.readJSON('package.json'),
 
-    // INDIVIDUAL TASK SPECS
     concat: {
       dist: {
         src: ['public/client/*.js'],
@@ -90,8 +88,6 @@ module.exports = function(grunt) {
     },
   });
 
-
-  // LOAD ALL DESIRED NPM TASKS
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -101,8 +97,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
 
-
-  // REGISTER ALL CREATED TASKS
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
     var nodemon = grunt.util.spawn({
@@ -120,28 +114,28 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
+  grunt.registerTask('default', [
+    'jshint'
+  ]);
+
   grunt.registerTask('test', [
+    'jshint',
     'mochaTest'
   ]);
 
-  grunt.registerTask('default', [
+  grunt.registerTask('deploy', [
     'concat',
     'uglify',
-    'cssmin',
-    'jshint'
+    'cssmin'
   ]);
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run([ 'test' ]);
+      grunt.task.run([ 'deploy' ]);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
-
-  grunt.registerTask('deploy', [
-    // add your deploy tasks here
-  ]);
-
-
 };
