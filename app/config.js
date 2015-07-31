@@ -1,5 +1,6 @@
 // MONGODB + MONGOOSE
 var mongoose = require('mongoose');
+// SPECIFY WHICH DB TO USE IN MONGO SHELL > use shortlydb
 mongoose.connect('mongodb://localhost/shortlydb');
 var db = mongoose.connection;
 

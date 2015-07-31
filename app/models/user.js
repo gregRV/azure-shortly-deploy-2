@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
 
+// BUILD SCHEMA, THEN USE TO BUILD RESPECTIVE MODEL
 var userSchema = mongoose.Schema({
   username: {type: String, index: {unique: true}},
   password: {type: String}
@@ -21,6 +22,7 @@ User.prototype.comparePassword = function(attemptedPassword, callback) {
   });
 }
 
+// ADD LIFE-CYCLE HOOKS W/ .pre
 userSchema.pre('save', function(next){
   var cipher = Promise.promisify(bcrypt.hash);
   return cipher(this.password, null, null).bind(this)

@@ -3,6 +3,7 @@ var db = require('../config');
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 
+// BUILD SCHEMA, THEN USE TO CREATE RESPECTIVE MODEL
 var linkSchema = mongoose.Schema({
   url: {type: String},
   base_url: {type: String},
@@ -13,6 +14,7 @@ var linkSchema = mongoose.Schema({
 
 var Link = mongoose.model('Link', linkSchema);
 
+// USE .pre TO HOOK LIFE-CYCLE EVENTS
 linkSchema.pre('save', function(next){
   var shasum = crypto.createHash('sha1');
   shasum.update(this.url);

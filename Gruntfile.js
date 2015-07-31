@@ -1,8 +1,10 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    // SPECIFY WHERE PACKAGES ARE COMING FROM
     pkg: grunt.file.readJSON('package.json'),
 
+    // DETAIL EACH TASK'S SPECS
     concat: {
       dist: {
         src: ['public/client/*.js'],
@@ -88,6 +90,7 @@ module.exports = function(grunt) {
     },
   });
 
+  // SPECIFY TASKS TO LOAD
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -110,10 +113,9 @@ module.exports = function(grunt) {
     grunt.task.run([ 'watch' ]);
   });
 
-  ////////////////////////////////////////////////////
-  // Main grunt tasks
-  ////////////////////////////////////////////////////
+  // MAIN GRUNT TASKS
 
+  // BUILD YOUR CUSTOM TASKS
   grunt.registerTask('default', [
     'jshint'
   ]);
